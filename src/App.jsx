@@ -3,36 +3,42 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import MasaDepan from "./assets/MasaDepan.jpg"
+import GymDate from "./assets/GymDate.jpg"
+import MyButton from './Button'
 
 function App() {
   const [count, setCount] = useState(0)
+  const [name, setName] = useState('John')
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={MasaDepan} className="logo" alt="Vite logo" style={{
-            width: "200px", height: "200px"
-          }}/>
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Mari belajar React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          Nilai {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-      Mari belajar vite + react 
-      </p>
-    </>
-  )
+  const [input,setInput] = useState('')
+  const [todos, setTodos] = useState([])
+  
+  const handleClick = () => {
+    setCount(count + 1)
+  }
+
+  const handleAddTodos = () => {
+    const currentInput = input
+  console.log(handleAddTodos)
+
+  setTodos([...todos, currentInput])
+  setInput('')
+  }
+
+  const handleNameChange = () => {
+    const newName = 'Jane'
+    setName(newName)
+  }
+    return(
+      <><input type="text" value={input} onChange={(e) => setInput(e.target.value)} />
+      <MyButton text="addTodo" onClick={handleAddTodos}/>
+      <ul>
+        {todos.map((todo, index) => (
+          <li key={index}>{todo}</li>
+        ))}
+      </ul>
+      </>
+    )
 }
 
 export default App
