@@ -6,8 +6,21 @@ function App() {
   const [todoText, setTodoText] = useState('')
 
   function handleOnAddtask (){
-    setTodos([...todos, todoText])
+    setTodos([...todos, {
+      task : todoText,
+      isCompleted : false
+    }])
     setTodoText('')
+  }
+
+  function handleOnCheckTask(isChecked, item){
+    const selectedIndex = todos.findIndex((todo) => todo.task === item.task)
+    if(selectedIndex !== -1){
+      const temporaryTodos = todos
+      temporaryTodos[selectedIndex].isCompleted = isChecked
+
+      setTodos([...temporaryTodos])
+    }
   }
   return (
     <div className="container">
@@ -24,7 +37,15 @@ function App() {
         <ul>
           {
           todos.map ((item, index) => (
-            <li key={index}>{item}</li>
+            <li key={index}>
+              {
+                !item.isCompleted && (
+                  <input type="checkbox" value={item.isCompleted} onChange={(evem) => {
+                    handleOnCheckTask(event.target.checked, item)
+                  }}/>
+                )
+              }
+            {item.task} {item.isCompleted && 'tugas selesai'}</li>
           ))
         }
         </ul>
