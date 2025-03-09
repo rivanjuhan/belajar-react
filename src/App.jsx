@@ -1,44 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import MasaDepan from "./assets/MasaDepan.jpg"
-import GymDate from "./assets/GymDate.jpg"
-import MyButton from './Button'
+import { useState } from "react"
+import Input from "./components/Input"
 
 function App() {
-  const [count, setCount] = useState(0)
-  const [name, setName] = useState('John')
-
-  const [input,setInput] = useState('')
   const [todos, setTodos] = useState([])
-  
-  const handleClick = () => {
-    setCount(count + 1)
-  }
+  const [todoText, setTodoText] = useState('')
 
-  const handleAddTodos = () => {
-    const currentInput = input
-  console.log(handleAddTodos)
-
-  setTodos([...todos, currentInput])
-  setInput('')
+  function handleOnAddtask (){
+    setTodos([...todos, todoText])
+    setTodoText('')
   }
+  return (
+    <div className="container">
+      <div>
+        <label htmlFor="">Input Tugas</label>&nbsp;
+        <input type="text" onChange={(event) => {
+          setTodoText(event.target.value)
+        }} value={todoText} />
 
-  const handleNameChange = () => {
-    const newName = 'Jane'
-    setName(newName)
-  }
-    return(
-      <><input type="text" value={input} onChange={(e) => setInput(e.target.value)} />
-      <MyButton text="addTodo" onClick={handleAddTodos}/>
-      <ul>
-        {todos.map((todo, index) => (
-          <li key={index}>{todo}</li>
-        ))}
-      </ul>
-      </>
-    )
+        <button onClick={handleOnAddtask}>Tambah Tugas</button>
+    </div>
+    {
+      todos.length ? (
+        <ul>
+          {
+          todos.map ((item, index) => (
+            <li key={index}>{item}</li>
+          ))
+        }
+        </ul>
+      ) : (
+        <div>
+          belum ada tugas. Tambahkan tugas pertamamu!
+        </div>
+      )
+    }
+    </div>
+    
+  )
 }
-
 export default App
