@@ -1,62 +1,54 @@
 import { useState } from "react"
-import Input from "./components/Input"
 
-function App() {
-  const [todos, setTodos] = useState([])
-  const [todoText, setTodoText] = useState('')
+function App(){
+  const [Todos, setTodos] = useState([])
+  const [TextInput, setTextInput] = useState("")
 
-  function handleOnAddtask (){
-    setTodos([...todos, {
-      task : todoText,
-      isCompleted : false
-    }])
-    setTodoText('')
+function AddNewTodos(){  // buat fungsi untuk menambahkan value dari textinput kedalam array todos
+  const todoItem ={ //buat susunan data agar mudah memanipulasi data pada step selanjutnya 
+    tittle : TextInput,
+    isCompleted : false
   }
+  setTodos((previousTodos) => [...previousTodos, todoItem]) //untuk insert data kedalam Todos
+}
 
-  function handleOnCheckTask(isChecked, item){
-    const selectedIndex = todos.findIndex((todo) => todo.task === item.task)
+  function onCompletedTask (isChecked, todoItem){
+    const selectedIndex = Todos.findIndex((item) => item.tittle === todoItem.tittle)
+
     if(selectedIndex !== -1){
-      const temporaryTodos = todos
-      temporaryTodos[selectedIndex].isCompleted = isChecked
-
-      setTodos([...temporaryTodos])
+      
+      setTodos(previousTodos =>{ 
+        const updateTodos = [...previousTodos];
+        updateTodos[selectedIndex].isCompleted = isChecked
+        return updateTodos;
+      })
     }
+
   }
-  return (
-    <div className="container">
-      <div>
-        <label htmlFor="">Input Tugas</label>&nbsp;
-        <input type="text" onChange={(event) => {
-          setTodoText(event.target.value)
-        }} value={todoText} />
 
-        <button onClick={handleOnAddtask}>Tambah Tugas</button>
+
+  return( // tambahkan value pada input dan onchange agar input bisa ditambah dan onclick pada button agar bisa diklik
+    <div>
+      <div>
+        <input type="text" value={TextInput} onChange={(event) => setTextInput(event.target.value)}/> 
+        <button onClick={AddNewTodos}>Tambah</button>
+      </div>
+
+      <ol> 
+        {Todos.map((item) => ( //menampilkan data berdasarkan data yang sudah dibuat (tittle : string, isCompleted: false(boolean))
+          <li key={item.tittle}>{
+            item.isCompleted ? ( //untuk menandakan item yang diceklis
+              <>✅&nbsp;</>
+            ) : (
+              <input type="checkbox" value={item.isCompleted} onChange={(event) => {
+                onCompletedTask(event.target.checked, item)
+              }} />
+            )
+          }{item.tittle} {item.isCompleted && <strong>&nbsp;(Tugas Sudah Selesai)</strong>}</li>
+        ))}
+      </ol>
     </div>
-    {
-      todos.length ? (
-        <ul>
-          {
-          todos.map ((item, index) => (
-            <li key={index}>
-              {
-                !item.isCompleted && (
-                  <input type="checkbox" value={item.isCompleted} onChange={(evem) => {
-                    handleOnCheckTask(event.target.checked, item)
-                  }}/>
-                )
-              }
-            {item.task} {item.isCompleted && 'tugas selesai'}</li>
-          ))
-        }
-        </ul>
-      ) : (
-        <div>
-          belum ada tugas. Tambahkan tugas pertamamu!
-        </div>
-      )
-    }
-    </div>
-    
   )
 }
+
 export default App
