@@ -1,4 +1,5 @@
 import { useState } from "react"
+import TaskList from "./components/TaskList"
 
 function App(){
   const [Todos, setTodos] = useState([])
@@ -34,19 +35,9 @@ function AddNewTodos(){  // buat fungsi untuk menambahkan value dari textinput k
         <button onClick={AddNewTodos}>Tambah</button>
       </div>
 
-      <ol> 
-        {Todos.map((item) => ( //menampilkan data berdasarkan data yang sudah dibuat (tittle : string, isCompleted: false(boolean))
-          <li key={item.tittle}>{
-            item.isCompleted ? ( //untuk menandakan item yang diceklis
-              <>✅&nbsp;</>
-            ) : (
-              <input type="checkbox" value={item.isCompleted} onChange={(event) => {
-                onCompletedTask(event.target.checked, item)
-              }} />
-            )
-          }{item.tittle} {item.isCompleted && <strong>&nbsp;(Tugas Sudah Selesai)</strong>}</li>
-        ))}
-      </ol>
+      <TaskList Todos={Todos}
+      onCompletedTask={onCompletedTask}/>
+      
     </div>
   )
 }
